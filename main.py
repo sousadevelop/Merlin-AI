@@ -1,5 +1,6 @@
 import pyttsx3              #converte texto em fala
 import speech_recognition as sr   #reconhecimento de fala do user
+import keyboard
 
 from decouple import config
 from datetime import datetime
@@ -33,6 +34,21 @@ def greet_me():
         speak(f"Boa madrugada {USER} !")
     speak(f"Eu sou {HOSTNAME}. Como posso ajudá-lo ? {USER}")
 
+listening = False
+
+def start_listening():
+    global listening
+    listening = True
+    print("Link start")
+
+def pause_listening():
+    global listening
+    listening = False
+    print("Parando de ouvir")
+
+keyboard.add_hotkey('ctrl+alt+s', start_listening)
+keyboard.add_hotkey('ctrl+alt+p', pause_listening)
+
 def take_command():
     r = sr.Recognizer()
     with sr.Microphone() as source:
@@ -44,7 +60,7 @@ def take_command():
         print("Reconhecendo...")
         query = r.recognize_google(audio, language='pt-br')
         print(query)
-        if not 'pare' in query or 'sair' or 'fechar' in query:
+        if not 'pare' in query or 'sair' in query or 'fechar' in query:
             speak(choice(random_text))
         else:
             hour = datetime.now().hour
@@ -62,6 +78,7 @@ def take_command():
 if __name__ == '__main__':
     greet_me()
     while True:
-        query = take_command().lower()
-        if "como você está" in query:
-            speak("Eu imagino que estou bem, senhor. E você, meu amigo ?")
+        if listening:
+            query = take_command().lower()
+            if "como você está" in query:
+                speak("Eu imagino que estou bem, senhor. E você, meu amigo ?")
