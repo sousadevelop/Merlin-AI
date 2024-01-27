@@ -1,6 +1,8 @@
 import pyttsx3              #converte texto em fala
 import speech_recognition as sr   #reconhecimento de fala do user
 import keyboard
+import os
+import subprocess as sp
 
 from decouple import config
 from datetime import datetime
@@ -82,3 +84,26 @@ if __name__ == '__main__':
             query = take_command().lower()
             if "como você está" in query:
                 speak("Eu imagino que estou bem, senhor. E você, meu amigo ?")
+
+            elif "Abra o prompt de comando" in query or "Abra o CMD" in query:
+                speak("Abrindo o prompt de comando")
+                os.system('start cmd')
+            
+            elif "Abra a câmera" in query:
+                speak("Abrindo a câmera, senhor")
+                sp.run('start microsoft.windows.camera:', shell=True)
+
+            elif "Abra o bloco de notas" in query:
+                speak("Abrindo o bloco de notas para você senhor")
+                notepad_path = "C:\\Windows\\System32\\notepad.exe"
+                os.startfile(notepad_path)
+
+            elif "Abra o powershell" in query:
+                speak("Abrindo o powershell para você senhor")
+                powershell_path = "C:\\Users\\victt\\AppData\\Local\\Microsoft\\WindowsApps\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\wt.exe"
+                os.startfile(powershell_path)
+
+            elif "Abra o linux em terminal" in query:
+                speak("Abrindo o ubuntu em terminal para o senhor")
+                linux_path = "C:\\Users\\victt\\AppData\\Local\\Microsoft\\WindowsApps\\ubuntu.exe"
+                os.startfile(linux_path)
